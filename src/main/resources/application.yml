@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: MicrometerJmsDynamicFactoryIssue
+
+jms:
+  config:
+    customerService:
+      connection-factory:
+        broker-url: tcp://localhost:61616
+        user-name: admin
+        password: admin
+    employeeService:
+      connection-factory:
+        broker-url: tcp://localhost:61616
+        user-name: admin
+        password: admin
+    userService:
+      connection-factory:
+        broker-url: tcp://localhost:61616
+        user-name: admin
+        password: admin
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      type: ${TRACING_PROPAGATION_TYPE:B3}
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework: ERROR
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%t] %-5level [${spring.application.name:}, traceId: %X{traceId}, spanId: %X{spanId}] --- %msg%n"
+
+
+
+server:
+  port: 8081
